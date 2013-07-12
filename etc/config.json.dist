@@ -1,0 +1,9 @@
+{
+    "address": "irc.example.com",
+    "port": 6667,
+    "nickname": "Mileina",
+    "password": "",
+    "channels": [
+        {"channel": "#Mileina", "password": ""}
+    ]
+}
