@@ -275,7 +275,7 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
                    "(?:(\\d+)h)?"
                    "(?:(\\d+)m)?"
                    "(?:(\\d+)s)?"
-                   "\\s+([^\\s]+.*)$", Qt::CaseInsensitive);
+                   "(?:\\s+([^\\s]+.*))?$", Qt::CaseInsensitive);
         if(re.exactMatch(_msg)) {
             QStringList list = re.capturedTexts();
             if(!(
