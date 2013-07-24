@@ -254,7 +254,7 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
             send(_command, to, _msg);
             return;
         }
-        QRegExp re("^\\?\\s", Qt::CaseInsensitive);
+        QRegExp re("^\\?\\s.*$", Qt::CaseInsensitive);
         if(re.exactMatch(_msg)) {
             _msg.remove(0,1);
             _msg.replace(QRegExp("([0-9\\.]+)\\s*\\^\\s*([0-9\\.]+)"),"Math.pow(\\1,\\2)");
