@@ -254,7 +254,8 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
             send(_command, to, _msg);
             return;
         }
-        if(_msg[0] == '?') {
+        QRegExp re("^\\?\\s", Qt::CaseInsensitive);
+        if(re.exactMatch(_msg)) {
             _msg.remove(0,1);
             _msg.replace(QRegExp("([0-9\\.]+)\\s*\\^\\s*([0-9\\.]+)"),"Math.pow(\\1,\\2)");
             QScriptEngine engine;
@@ -269,13 +270,13 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
             }
             return;
         }
-        QRegExp re("^\\.t\\s*"
+        re.setPattern("^\\.t\\s*"
                    "(?:(\\d+)w)?"
                    "(?:(\\d+)d)?"
                    "(?:(\\d+)h)?"
                    "(?:(\\d+)m)?"
                    "(?:(\\d+)s)?"
-                   "(?:\\s+([^\\s]+.*))?$", Qt::CaseInsensitive);
+                   "(?:\\s+([^\\s]+.*))?$");
         if(re.exactMatch(_msg)) {
             QStringList list = re.capturedTexts();
             if(!(
@@ -340,7 +341,7 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
             }
             return;
         }
-        re.setPattern("^\\.t.*");
+        re.setPattern("^\\.t\\s.*");
         if(re.exactMatch(_msg)) {
             send(_command, to, QString("Invalid syntax: .t <time> <message>"));
             return;
