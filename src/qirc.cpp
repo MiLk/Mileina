@@ -8,6 +8,7 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <math.h>
 
 #include "timermanager.h"
 
@@ -254,9 +255,10 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
             send(_command, to, _msg);
             return;
         }
-        QRegExp re("^\\?\\s.*$", Qt::CaseInsensitive);
+        QRegExp re("^\\?.+$", Qt::CaseInsensitive);
         if(re.exactMatch(_msg)) {
             _msg.remove(0,1);
+            _msg.replace(",",".");
             _msg.replace(QRegExp("([0-9\\.]+)\\s*\\^\\s*([0-9\\.]+)"),"Math.pow(\\1,\\2)");
             QScriptEngine engine;
             QString function("function myFunction() { return " + _msg + "; }");
@@ -266,7 +268,8 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
             } else {
                 QScriptValue scriptFunction = engine.globalObject().property("myFunction");
                 double result = scriptFunction.call().toNumber();
-                send(_command, to, _from + ": " + QString("%1").arg(result));
+                if(!isnan(result))
+                    send(_command, to, _from + ": " + QString("%1").arg(result));
             }
             return;
         }
