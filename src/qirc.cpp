@@ -243,7 +243,8 @@ void QIrc::receiveCommand(QString _from, QString _command, QString _to, QString 
     }
 
     if(_from == "NickServ" && _command == "NOTICE") {
-        if(_msg.contains("please choose a different nick")) {
+        if(_msg.contains("please choose a different nick") ||
+           _msg.contains("merci de choisir un pseudo différent")) {
             identify();
         }
     }
